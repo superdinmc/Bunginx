@@ -12,3 +12,12 @@ Bunginx: Fast, lightweight, simple HTTP file server
  [cwd: string]              Directory that Bunginx will run on,
                             - defaults to current directory.
 ```
+
+## Installation
+This installation guide is for linux users, for windows [please compile it yourself](#compiling)
+- Download the binary [here](https://github.com/superdinmc/Bunginx/raw/main/bunginx) (Or "bunginx" in the repo)
+- Put it in PATH somewhere idk
+## Compiling
+`bun compile`
+## Contribution
+Pull requests are welcomed.
