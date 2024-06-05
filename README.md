@@ -14,10 +14,16 @@ Bunginx: Fast, lightweight, simple HTTP file server
 ```
 
 ## Installation
-This installation guide is for linux users, for windows [please compile it yourself](#compiling)
+This installation guide is for **linux users**, for windows [please compile it yourself](#compiling)
 - Download the binary [here](https://github.com/superdinmc/Bunginx/raw/main/bunginx) (Or "bunginx" in the repo)
 - Put it in PATH somewhere idk
 ## Compiling
-`bun compile`
+### Prerequisites
+Bun installed and is on PATH
+### Compilation
+- Clone the repository
+- Run `bun compile`
+- Result will be in `./bunginx`
+- (Optional)(**Linux-only**) Apply the application to `/usr/bin` via `bun apply`
 ## Contribution
 Pull requests are welcomed.
