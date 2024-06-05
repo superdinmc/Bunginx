@@ -6,7 +6,7 @@ import { parseArgs } from 'util';
 import { Worker, workerData } from 'worker_threads';
 if (Bun.isMainThread) {
   const args = parseArgs({
-    args: Bun.argv,
+    args: Bun.argv.slice(2),
     options: {
       port: {
         type: 'string',
@@ -48,11 +48,13 @@ if (Bun.isMainThread) {
     )
     process.exit();
   }
-  console.log("Starting HTTP cluster of", threadCount, "threads at port", port)
+  const cwd = args?.positionals.join(' ');
+  console.log("Serving" + (cwd ? ' ' + cwd : ''), "with", threadCount, "threads at port", port)
   for (let i = 0; i < threadCount; i++) {
-    const worker = new Worker(__filename, { workerData: { port, id: i } })
+    const worker = new Worker(__filename, { workerData: { port, id: i, cwd: cwd || __dirname } })
   }
 } else {
+  const cwd = workerData?.cwd;
   var lastpath = 'Unknown Origin';
   Bun.serve({
     fetch(req) {
@@ -70,10 +72,10 @@ if (Bun.isMainThread) {
   });
 
 
-  const notFoundPage = Bun.file(__dirname + '404.html');
+  const notFoundPage = Bun.file(cwd + '404.html');
   async function resolve(path: string) {
-    const pathCwd = join(__dirname, path);
-    if (!pathCwd.startsWith(__dirname) || pathCwd.includes('..'))
+    const pathCwd = join(cwd, path);
+    if (!pathCwd.startsWith(cwd) || pathCwd.includes('..'))
       return new Response(path + ': 404 Not Found', {
         status: 404
       });
