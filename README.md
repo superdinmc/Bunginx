@@ -1,15 +1,14 @@
-# bunginx
+# Bunginx
 
-To install dependencies:
-
-```bash
-bun install
+Ok I let it introduce itself here:
 ```
-
-To run:
-
-```bash
-bun run index.ts
+Bunginx: Fast, lightweight, simple HTTP file server
+ bunginx [-phc] [--port <port>] [--cluster <count>] [cwd]
+ --port <port: number>      Set the port for Bunginx [-p]
+                            - defaults to $PORT or 8000.
+ --cluster <count: number>  Set the threads that Bunginx will spawn [-c]
+                            - defaults to the CPU core count.
+ --help                     Display this message
+ [cwd: string]              Directory that Bunginx will run on,
+                            - defaults to current directory.
 ```
-
-This project was created using `bun init` in bun v1.1.12. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
