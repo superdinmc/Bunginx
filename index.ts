@@ -21,6 +21,10 @@ if (Bun.isMainThread) {
       help: {
         type: 'boolean',
         short: 'h'
+      },
+      debug: {
+        type: 'boolean',
+        short: 'd'
       }
     },
     allowPositionals: true
@@ -37,30 +41,35 @@ if (Bun.isMainThread) {
   }
   if (args.values.help) {
     console.log('Bunginx: Fast, lightweight, simple HTTP file server\n',
-      'bunginx [-phc] [--port <port>] [--cluster <count>] [cwd]\n',
+      'bunginx [-pdhc] [--port <port>] [--cluster <count>] [--debug] [cwd]\n',
       '--port <port: number>      Set the port for Bunginx [-p]\n',
       '                           - defaults to $PORT or 8000.\n',
       '--cluster <count: number>  Set the threads that Bunginx will spawn [-c]\n',
       '                           - defaults to the CPU core count.\n',
-      '--help                     Display this message\n',
+      '--debug                    Display debug messages during run [-d]\n',
+      '--help                     Display this message [-h]\n',
       '[cwd: string]              Directory that Bunginx will run on,\n',
       '                           - defaults to current directory.'
     )
     process.exit();
   }
   const cwd = args?.positionals.join(' ');
+  const debug = !!args?.values.debug;
   console.log("Serving" + (cwd ? ' ' + cwd : ''), "with", threadCount, "threads at port", port)
   for (let i = 0; i < threadCount; i++) {
-    const worker = new Worker(__filename, { workerData: { port, id: i, cwd: cwd || __dirname } })
+    const worker = new Worker(__filename, { workerData: { port, id: i, cwd: cwd || __dirname, debug } })
   }
 } else {
   const cwd = workerData?.cwd;
+  const debug = workerData?.debug;
   var lastpath = 'Unknown Origin';
   Bun.serve({
-    fetch(req) {
+    async fetch(req) {
       const url = new URL(req.url);
       lastpath = url?.pathname;
-      return resolve(url.pathname);
+      const response = await resolve(url.pathname);
+      if (debug) console.debug(`[w${workerData.id}|${response.status}] ${url?.pathname}`)
+      return response;
     },
     error(error) {
       return new Response(`${lastpath}: ${error}`, {
@@ -68,7 +77,7 @@ if (Bun.isMainThread) {
       });
     },
     reusePort: true,
-    port: workerData?.port
+    port: workerData?.port,
   });
 
 
