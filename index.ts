@@ -67,7 +67,7 @@ if (Bun.isMainThread) {
     async fetch(req) {
       const url = new URL(req.url);
       lastpath = url?.pathname;
-      const response = await resolve(url.pathname);
+      const response = await resolve(decodeURIComponent(url.pathname));
       if (debug) console.debug(`[w${workerData.id}|${response.status}] ${url?.pathname}`)
       return response;
     },
