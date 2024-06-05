@@ -10,7 +10,8 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "compile": "bun build --compile --minify --sourcemap ./index.ts --outfile bunginx",
+    "compile": "bun build.js",
+    "windows": "bun build --compile --minify --sourcemap ./index.ts --outfile bunginx",
     "apply": "sudo cp bunginx /usr/bin/bunginx",
     "dev": "bun --watch ."
   }

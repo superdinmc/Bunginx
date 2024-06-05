@@ -57,7 +57,7 @@ if (Bun.isMainThread) {
   const debug = !!args?.values.debug;
   console.log("Serving" + (cwd ? ' ' + cwd : ''), "with", threadCount, "threads at port", port)
   for (let i = 0; i < threadCount; i++) {
-    const worker = new Worker(__filename, { workerData: { port, id: i, cwd: cwd || __dirname, debug } })
+    const worker = new Worker(__filename, { workerData: { port, id: i, cwd: cwd || process.cwd(), debug } })
   }
 } else {
   const cwd = workerData?.cwd;

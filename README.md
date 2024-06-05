@@ -23,7 +23,8 @@ This installation guide is for **linux users**, for windows [please compile it y
 Bun installed and is on PATH
 ### Compilation
 - Clone the repository
-- Run `bun compile`
+- For linux, run `bun compile`
+- For windows, run `bun windows`(Result in 90mb binary, and very limited support)
 - Result will be in `./bunginx`
 - (Optional)(**Linux-only**) Apply the application to `/usr/bin` via `bun apply`
 ## Contribution
@@ -33,4 +34,4 @@ Pull requests are welcomed.
 Bun's [Single-file executable](https://bun.sh/docs/bundler/executables) integrates and compiles the code into a copy of bun runtime itself, resulting in a pretty large file.
 However, They will soon make the binary itself smaller.
 ### How to blacklist a file from Bunginx?
-Simply just remove read permission of that file from the user that Bunginx runs from, or just remove the read permission entirely.
+Simply just remove read permission of that file from the user that Bunginx runs from, or just remove the read permission entirely. (Sorry windows.)
