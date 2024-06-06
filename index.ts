@@ -82,6 +82,7 @@ if (Bun.isMainThread) {
     reusePort: true,
     port: workerData?.port,
   });
+  if(debug) console.log(`[w${workerData.id}] Online.`)
 
 
   const notFoundPage = Bun.file(cwd + '404.html');
