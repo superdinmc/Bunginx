@@ -87,7 +87,7 @@ if (Bun.isMainThread) {
 
   const notFoundPage = Bun.file(cwd + '404.html');
   async function resolve(path: string) {
-    const pathCwd = join(cwd, path);
+    let pathCwd = join(cwd, path);
     if (!pathCwd.startsWith(cwd) || pathCwd.includes('..'))
       return new Response(path + ': 404 Not Found', {
         status: 404
@@ -100,7 +100,6 @@ if (Bun.isMainThread) {
         status: 404
       });
     }
-    const stat = fs.lstatSync(pathCwd);
     const indexFile = Bun.file(join(pathCwd, 'index.html'));
     if (await indexFile.exists()) {
       if (!path.endsWith('/')) return new Response('', {
@@ -111,6 +110,9 @@ if (Bun.isMainThread) {
       })
       return await resolve(join(path, 'index.html'));
     }
+    const htmlFile = Bun.file(pathCwd + '.html');
+    if (await htmlFile.exists()) pathCwd = pathCwd + '.html';
+    const stat = fs.lstatSync(pathCwd);
     if (stat.isDirectory()) {
       // Dir
       const list = fs.readdirSync(pathCwd, { withFileTypes: true }).map(f => {
