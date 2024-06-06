@@ -1,9 +1,11 @@
 declare var self: Worker;
+declare var version: string;
 import fs from 'fs';
 import { availableParallelism } from 'os';
 import { join } from 'path';
 import { parseArgs } from 'util';
 import { Worker, workerData } from 'worker_threads';
+//const version = 'Development';
 if (Bun.isMainThread) {
   const args = parseArgs({
     args: Bun.argv.slice(2),
@@ -55,10 +57,11 @@ if (Bun.isMainThread) {
   }
   const cwd = args?.positionals.join(' ');
   const debug = !!args?.values.debug;
-  console.log("Serving" + (cwd ? ' ' + cwd : ''), "with", threadCount, "threads at port", port)
+  console.log('Bunginx v'+(typeof version==='string'?version:'Development'));
   for (let i = 0; i < threadCount; i++) {
     const worker = new Worker(process.argv[1] || __filename, { workerData: { port, id: i, cwd: cwd || process.cwd(), debug } })
   }
+  console.log("Serving" + (cwd ? ' ' + cwd : ''), "with", threadCount, "threads at port", port)
 } else {
   const cwd = workerData?.cwd;
   const debug = workerData?.debug;
