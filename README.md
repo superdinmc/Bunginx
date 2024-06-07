@@ -1,6 +1,6 @@
 # Bunginx
 
-Ok I let it introduce itself here:
+A fast, lightweight and simple HTTP file server based on Bun and nginx for Linux Users:
 ```
 Bunginx: Fast, lightweight, simple HTTP file server
  bunginx [-pdhc] [--port <port>] [--cluster <count>] [--debug] [cwd]
