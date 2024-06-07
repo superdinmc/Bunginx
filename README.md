@@ -1,6 +1,6 @@
 # Bunginx
 
-A fast, lightweight and simple HTTP file server based on Bun and nginx for Linux Users:
+A fast, lightweight and simple HTTP file server based on Bun and nginx for Linux and Windows:
 ```
 Bunginx: Fast, lightweight, simple HTTP file server
  bunginx [-pdhc] [--port <port>] [--cluster <count>] [--debug] [cwd]
