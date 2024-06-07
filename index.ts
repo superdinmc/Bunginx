@@ -57,7 +57,7 @@ if (Bun.isMainThread) {
   }
   const cwd = args?.positionals.join(' ');
   const debug = !!args?.values.debug;
-  console.log('Bunginx v'+(typeof version==='string'?version:'Development'));
+  console.log('Bunginx v' + (typeof version === 'string' ? version : 'Development'));
   for (let i = 0; i < threadCount; i++) {
     const worker = new Worker(process.argv[1] || __filename, { workerData: { port, id: i, cwd: cwd || process.cwd(), debug } })
   }
@@ -70,9 +70,15 @@ if (Bun.isMainThread) {
     async fetch(req) {
       const url = new URL(req.url);
       lastpath = url?.pathname;
-      const response = await resolve(decodeURIComponent(url.pathname));
-      if (debug) console.debug(`[w${workerData.id}|${response.status}] ${url?.pathname}`)
-      return response;
+      try {
+        const response = await resolve(decodeURIComponent(url.pathname));
+        if (debug) console.debug(`[w${workerData.id}|${response.status}] ${url?.pathname}`)
+        return response;
+      }
+      catch (e: any) {
+        if (debug) console.error(`[w${workerData.id}|ERR] ${e.message}`)
+        return new Response(url?.pathname + ': 500 ' + e.message, { status: 500 })
+      }
     },
     error(error) {
       return new Response(`${lastpath}: ${error}`, {
@@ -82,7 +88,7 @@ if (Bun.isMainThread) {
     reusePort: true,
     port: workerData?.port,
   });
-  if(debug) console.log(`[w${workerData.id}] Online.`)
+  if (debug) console.log(`[w${workerData.id}] Online.`)
 
 
   const notFoundPage = Bun.file(cwd + '404.html');
